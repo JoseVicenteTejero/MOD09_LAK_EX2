@@ -15,6 +15,7 @@
 
     removeStar(sessionId) {
         /// <summary>Removes the star from the given session.</summary>
+        this.localStarStorage.addStar(this.id);
         const index = this.sessions.indexOf(sessionId);
         if (index >= 0) {
             this.sessions.splice(index, 1);
@@ -31,10 +32,20 @@
         /// <summary>Loads the starred sessions from storage.</summary>
 
         // TODO: get the "stars" from local storage
-
+        var json = this.localStorage.getItem("stars");
         // TODO: parse the JSON string into this.sessions
 
         // TODO: handle failures due to missing data, etc
+        if (json) {
+            try {
+                this.sessions = JSON.parse(json) || [];
+            } catch (exception) {
+                this.sessions = [];
+            }
+        } else {
+            this.sessions = [];
+        }
+
     }
 
     save() {
